@@ -1,0 +1,17 @@
+<h2>メモタイトル</h2>
+<p>
+  <%= @link_data[:title] %>
+</p>
+<h2>メモ本文</h2>
+<p>
+  <%= @link_data[:content] %>
+</p>
+<br>
+<form method="get" action="/edit_memo/<%= @link_data[:id] %>">
+  <input type="submit" value="変更">
+</form>
+<form method="post" action="/delete_memo">
+  <input type="hidden" name="_method" value="delete">
+  <input type="text" name="delete_id" value="<%= @link_data[:id] %>" hidden>
+  <input type="submit" value="削除">
+</form>
