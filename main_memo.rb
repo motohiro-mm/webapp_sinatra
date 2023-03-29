@@ -5,7 +5,6 @@ require 'sinatra/reloader'
 require 'csv'
 require 'cgi'
 
-
 set :environment, :production
 
 MEMOPATH = File.realpath('memo_data.csv')
