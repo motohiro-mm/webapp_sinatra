@@ -67,3 +67,7 @@ input[type="submit"] {
   color: white;
   background: #3b508d;
 }
+
+.memo_content {
+  white-space: pre-wrap;
+}
