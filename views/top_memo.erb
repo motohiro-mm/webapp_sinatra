@@ -1,11 +1,11 @@
-<form method="get" action="/new_memo">
+<form method="get" action="/memos/new">
   <input type="submit" value="新規作成">
 </form>
 <h2>メモタイトル一覧</h2>
 <p>
   <ul type="disc">
-    <% @top_data.each do |t_d| %>
-      <li><a href="/show_memo/<%= t_d[:id] %>"><%= t_d[:title] %></a><br></li>
+    <% @top_memos.each do |top_memo| %>
+      <li><a href="/memos/<%= top_memo[:id] %>"><%= sanitize(top_memo[:title]) %></a><br></li>
     <% end %>
   </ul>
 </p>
