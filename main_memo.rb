@@ -15,9 +15,8 @@ def memos
 end
 
 def new_id
-  id_max = CSV.read(IDPATH).last.join.to_i
-  updated_id = id_max.nil? ? 1 : id_max + 1
-  CSV.open(IDPATH, 'a') do |csv|
+  updated_id = CSV.read(IDPATH).join.to_i + 1
+  CSV.open(IDPATH, 'w') do |csv|
     csv << [updated_id]
   end
   updated_id
