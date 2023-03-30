@@ -1,4 +1,4 @@
-<form method="post" action="/edit_memo">
+<form method="post" action="/memos/<%= @link_memo[:id] %>/edit">
   <h2>メモタイトル</h2>
   <p>
     <input type="text" name="edit_title" value="<%= @link_memo[:title] %>" maxlength=30>
