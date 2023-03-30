@@ -98,7 +98,7 @@ patch '/memos/:id/edit' do
   redirect '/memos'
 end
 
-delete '/memos/delete' do
+delete '/memos/:id/delete' do
   delete_memo(params[:delete_id])
 
   redirect '/memos'
