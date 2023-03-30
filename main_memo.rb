@@ -16,11 +16,11 @@ end
 
 def new_id
   id_max = CSV.read(IDPATH).last.join.to_i
-  update_id = id_max.nil? ? 1 : id_max + 1
+  updated_id = id_max.nil? ? 1 : id_max + 1
   CSV.open(IDPATH, 'a') do |csv|
-    csv << [update_id]
+    csv << [updated_id]
   end
-  update_id
+  updated_id
 end
 
 def add_memo(title, content)
@@ -82,15 +82,13 @@ post '/memos/new' do
 end
 
 get '/memos/:id' do
-  link_id = params[:id]
-  @link_memo = memos.find { |memo| memo[:id] == link_id }
+  @target_memo = memos.find { |memo| memo[:id] == params[:id] }
 
   erb :show_memo
 end
 
 get '/memos/:id/edit' do
-  link_id = params[:id]
-  @link_memo = memos.find { |memo| memo[:id] == link_id }
+  @target_memo = memos.find { |memo| memo[:id] == params[:id] }
 
   erb :edit_memo
 end
