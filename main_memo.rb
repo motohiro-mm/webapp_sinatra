@@ -74,7 +74,7 @@ get '/memos/new' do
   erb :new_memo
 end
 
-post '/memos/new' do
+post '/memos' do
   add_memo(params[:new_title], params[:new_content])
 
   redirect '/memos'
@@ -92,13 +92,13 @@ get '/memos/:id/edit' do
   erb :edit_memo
 end
 
-patch '/memos/:id/edit' do
+patch '/memos/:id' do
   edit_memo(params[:edit_title], params[:edit_content], params[:edit_id])
 
   redirect '/memos'
 end
 
-delete '/memos/:id/delete' do
+delete '/memos/:id' do
   delete_memo(params[:delete_id])
 
   redirect '/memos'

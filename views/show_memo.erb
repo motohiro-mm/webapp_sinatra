@@ -10,7 +10,7 @@
 <form method="get" action="/memos/<%= @target_memo[:id] %>/edit">
   <input type="submit" value="変更">
 </form>
-<form method="post" action="/memos/<%= @target_memo[:id] %>/delete">
+<form method="post" action="/memos/<%= @target_memo[:id] %>">
   <input type="hidden" name="_method" value="delete">
   <input type="text" name="delete_id" value="<%= @target_memo[:id] %>" hidden>
   <input type="submit" value="削除">
