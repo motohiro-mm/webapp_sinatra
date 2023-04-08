@@ -27,7 +27,7 @@ def delete_memo(id)
   MEMOS.exec_params('DELETE FROM memos WHERE id = $1', [id])
 end
 
-def escape_memo(data)
+def escape_string(data)
   CGI.escapeHTML(data)
 end
 
