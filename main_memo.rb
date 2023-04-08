@@ -31,6 +31,10 @@ def escape_string(data)
   CGI.escapeHTML(data)
 end
 
+def target_memo(id)
+  MEMOS.exec_params('SELECT * FROM memos WHERE id = $1', [id])
+end
+
 get '/' do
   redirect '/memos'
 end
@@ -52,13 +56,13 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @target_memo = MEMOS.exec_params('SELECT * FROM memos WHERE id = $1', [params[:id]])
+  @target_memo = target_memo(params[:id])
 
   erb :show_memo
 end
 
 get '/memos/:id/edit' do
-  @target_memo = MEMOS.exec_params('SELECT * FROM memos WHERE id = $1', [params[:id]])
+  @target_memo = target_memo(params[:id])
 
   erb :edit_memo
 end
