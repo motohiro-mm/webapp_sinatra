@@ -5,7 +5,7 @@
 <p>
   <ul type="disc">
     <% @top_memos.each do |top_memo| %>
-      <li><a href="/memos/<%= top_memo["id"] %>"><%= escape_memo(top_memo["title"]) %></a><br></li>
+      <li><a href="/memos/<%= top_memo["id"] %>"><%= escape_string(top_memo["title"]) %></a><br></li>
     <% end %>
   </ul>
 </p>

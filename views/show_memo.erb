@@ -1,11 +1,11 @@
 <h2>メモタイトル</h2>
 <% @target_memo.each do |memo| %>
   <p>
-  <%= escape_memo(memo["title"]) %>
+  <%= escape_string(memo["title"]) %>
   </p>
   <h2>メモ本文</h2>
   <p class="memo_content">
-  <%= escape_memo(memo["content"]) %>
+  <%= escape_html(memo["content"]) %>
   </p>
   <br>
   <form method="get" action="/memos/<%= memo["id"] %>/edit">
