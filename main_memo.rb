@@ -10,13 +10,7 @@ set :environment, :production
 MEMOS = PG.connect(dbname: 'memos_db', user: 'postgres')
 
 def add_memo(title, content)
-  new_id = MEMOS.exec('SELECT * FROM ids').values.join.to_i + 1
-  if new_id != 1
-    MEMOS.exec_params('UPDATE ids SET id = $1', [new_id])
-  else
-    MEMOS.exec_params('INSERT INTO ids VALUES (1)')
-  end
-  MEMOS.exec_params('INSERT INTO memos VALUES($1,$2,$3)', [title, content, new_id])
+  MEMOS.exec_params('INSERT INTO memos VALUES($1,$2)', [title, content])
 end
 
 def edit_memo(title, content, id)
