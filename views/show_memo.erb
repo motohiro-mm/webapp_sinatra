@@ -13,7 +13,6 @@
   </form>
   <form method="post" action="/memos/<%= memo["id"] %>">
     <input type="hidden" name="_method" value="delete">
-    <input type="text" name="delete_id" value="<%= memo["id"] %>" hidden>
     <input type="submit" value="削除">
   </form>
 <% end %>

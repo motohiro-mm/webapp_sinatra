@@ -62,13 +62,13 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  edit_memo(params[:edit_title], params[:edit_content], params[:edit_id])
+  edit_memo(params[:edit_title], params[:edit_content], params[:id])
 
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  delete_memo(params[:delete_id])
+  delete_memo(params[:id])
 
   redirect '/memos'
 end
