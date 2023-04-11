@@ -1,14 +1,15 @@
-<form method="post" action="/memos/<%= @target_memo[:id] %>">
+<% @target_memo.each do |memo| %>
+  <form method="post" action="/memos/<%= memo["id"] %>">
   <h2>メモタイトル</h2>
   <p>
-    <input type="text" name="edit_title" value="<%= @target_memo[:title] %>" maxlength=30>
+    <input type="text" name="edit_title" value="<%= escape_string(memo["title"]) %>" maxlength=100>
   </p>
   <h2>メモ本文</h2>
   <p>
-    <textarea name="edit_content" maxlength=300><%= @target_memo[:content] %></textarea>
+    <textarea name="edit_content" maxlength=500><%= escape_string(memo["content"]) %></textarea>
   </p>
   <br>
   <input type="hidden" name="_method" value="patch">
-  <input type="text" name="edit_id" value="<%= @target_memo[:id] %>" hidden>
   <input type="submit" value="変更">
-</form>
+  </form>
+<% end %>

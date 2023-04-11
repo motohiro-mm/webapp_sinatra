@@ -2,62 +2,31 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'csv'
+require 'pg'
 require 'cgi'
 
 set :environment, :production
 
-MEMOPATH = File.realpath('memo_data.csv')
-IDPATH = File.realpath('id_data.csv')
-
-def memos
-  CSV.read(MEMOPATH, headers: true, header_converters: :symbol)
-end
-
-def new_id
-  updated_id = CSV.read(IDPATH).join.to_i + 1
-  CSV.open(IDPATH, 'w') do |csv|
-    csv << [updated_id]
-  end
-  updated_id
-end
+MEMOS = PG.connect(dbname: 'memos_db', user: 'postgres')
 
 def add_memo(title, content)
-  CSV.open(MEMOPATH, 'a') do |csv|
-    csv << [title, content, new_id]
-  end
+  MEMOS.exec_params('INSERT INTO memos VALUES($1,$2)', [title, content])
 end
 
 def edit_memo(title, content, id)
-  current_memos = memos
-  current_memos.each do |current_memo|
-    if current_memo[:id] == id
-      current_memo[:title] = title
-      current_memo[:content] = content
-    end
-  end
-  overwrite_memos(current_memos.to_a)
+  MEMOS.exec_params('UPDATE memos SET title = $1 , content = $2 WHERE id = $3', [title, content, id])
 end
 
 def delete_memo(id)
-  current_memos = memos
-  current_memos.delete_if do |current_memo|
-    current_memo[:id] == id
-  end
-
-  overwrite_memos(current_memos.to_a)
+  MEMOS.exec_params('DELETE FROM memos WHERE id = $1', [id])
 end
 
-def overwrite_memos(new_memos)
-  CSV.open(MEMOPATH, 'w') do |csv|
-    new_memos.each do |new_memo|
-      csv << new_memo
-    end
-  end
-end
-
-def sanitize(data)
+def escape_string(data)
   CGI.escapeHTML(data)
+end
+
+def target_memo(id)
+  MEMOS.exec_params('SELECT * FROM memos WHERE id = $1', [id])
 end
 
 get '/' do
@@ -65,7 +34,7 @@ get '/' do
 end
 
 get '/memos' do
-  @top_memos = memos
+  @top_memos = MEMOS.exec('SELECT * FROM memos ORDER BY id')
 
   erb :top_memo
 end
@@ -81,25 +50,25 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @target_memo = memos.find { |memo| memo[:id] == params[:id] }
+  @target_memo = target_memo(params[:id])
 
   erb :show_memo
 end
 
 get '/memos/:id/edit' do
-  @target_memo = memos.find { |memo| memo[:id] == params[:id] }
+  @target_memo = target_memo(params[:id])
 
   erb :edit_memo
 end
 
 patch '/memos/:id' do
-  edit_memo(params[:edit_title], params[:edit_content], params[:edit_id])
+  edit_memo(params[:edit_title], params[:edit_content], params[:id])
 
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  delete_memo(params[:delete_id])
+  delete_memo(params[:id])
 
   redirect '/memos'
 end
